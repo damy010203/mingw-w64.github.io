@@ -1,144 +1,138 @@
-<header>
-<h1 style="text-align: left">
-    <img src="header-dark.svg#gh-dark-mode-only" style="max-width: min(90%, 400px);">
-    <img src="header.svg#gh-light-mode-only" style="max-width: min(90%, 400px);">
-</h1>
-</header>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-# 
+#pragma pack(1)
 
-Mingw-w64 is an advancement of the original mingw.org project, created to
-support the GCC compiler on Windows systems. It has forked it in 2007 in order
-to provide support for 64 bits and new APIs. It has since then gained widespread
-use and distribution.
+typedef struct
+{
+    char signature[2];
+    unsigned int fileSize;
+    short reserved1;
+    short reserved2;
+    unsigned int dataOffset;
+} BMPHeader;
 
-The development and community are very active and welcoming with new
-contributors every month and simple installers.
+typedef struct
+{
+    unsigned int size;
+    int width;
+    int height;
+    short planes;
+    short bitCount;
+    unsigned int compression;
+    unsigned int imageSize;
+    int xPixelsPerMeter;
+    int yPixelsPerMeter;
+    unsigned int colorsUsed;
+    unsigned int colorsImportant;
+} BMPInfoHeader;
 
-## Headers, Libraries and Runtime
+void convertToGrayscale(const char *inputFileName, const char *outputFileName);
 
-- More than a million lines of headers are provided, not counting generated ones,
-  and regularly expanded to track new Windows APIs.
-- Everything needed for linking and running your code on Windows.
-- Winpthreads, a pthreads library for C++11 threading support and simple
-  integration with existing project.
-- Winstorecompat, a work-in-progress convenience library that eases conformance with the Windows Store.
-- Better-conforming and faster math support compared to VisualStudio's.
+int main(int argc, char *argv[])
+{
+    if (argc != 3)
+    {
+        printf("Usage: %s input_file output_file\n", argv[0]);
+        return 1;
+    }
 
-## Tools
+    const char *inputFileName = argv[1];
+    const char *outputFileName = argv[2];
 
-- gendef: generate Visual Studio .def files from .dll files.
-- genidl: generate .idl files from .dll files.
-- widl: compile .idl files.
+    convertToGrayscale(inputFileName, outputFileName);
 
-## Friend projects
+    printf("Conversion completed.\n");
 
-Mingw-w64 interacts a lot with other projects in order to help everyone move
-forward. Contributions have been going to and coming from these projects:
+    return 0;
+}
 
-<table>
-<tr>
-<td style="text-align: center">
-    <a href="http://cygwin.com" class="media" title="http://cygwin.com"><img src="./logos/cygwin-logo.png" title="Cygwin" width="64" height="64" alt="Cygwin" />
-    <br>Cygwin
-    </a>
-</td>
-<td style="text-align: center">
-    <a href="http://reactos.com" class="media" title="http://reactos.com"><img src="./logos/reactos-logo.png" title="ReactOS" width="116" height="64" alt="ReactOS" />
-    <br>
-    ReactOS
-    </a>
-</td>
-<td style="text-align: center">
-    <a href="http://winehq.org" class="media" title="http://winehq.org"><img src="./logos/wine-logo.png" title="Wine" width="40" height="64" alt="Wine" />
-    <br>
-    Wine
-    </a>
-</td>
-<td style="text-align: center">
-    <a href="https://www.msys2.org" class="media" title="https://www.msys2.org"><img src="./logos/msys2-logo.png" title="MSYS2" width="64" height="64" alt="MSYS2" />
-    <br>
-    MSYS2
-    </a>
-</td>
-</tr>
-</table>
+void convertToGrayscale(const char *inputFileName, const char *outputFileName)
+{
+    FILE *inputFile = fopen(inputFileName, "rb");
 
-## Some Projects using Mingw-w64
+    if (inputFile == NULL)
+    {
+        perror("Error opening input file");
+        exit(EXIT_FAILURE);
+    }
 
-- [Fedora cross-compiler](http://fedoraproject.org/wiki/MinGW)
-- [Npackd](https://npackd.appspot.com)
-- [OpenSUSE](http://opensuse.org)
-- [Win-builds](http://win-builds.org)
-- [Barchart-UDT](http://code.google.com/p/barchart-udt/)
-- [Blender](http://www.blender.org/)
-- [Boost](http://www.boost.org/)
-- [Botan](http://botan.randombit.net/)
-- [Ceemple](http://www.ceemple.com)
-- [Code::Blocks](http://www.codeblocks.org/)
-- [DAE Tools](http://daetools.sourceforge.net)
-- [devkitPro](http://devkitpro.org/)
-- [Disk Based HashTables](http://sourceforge.net/projects/dbh/)
-- [Ecere SDK](http://www.ecere.org/)
-- [Ekiga](http://www.ekiga.org/)
-- [Emerge Desktop](http://emergedesktop.org)
-- [Enlightenment](http://www.enlightenment.org/)
-- [Factor](http://factorcode.org/)
-- [FFmpeg](http://ffmpeg.mplayerhq.hu/)
-- [FLTK](http://www.fltk.org/)
-- [Freecell Solver](http://fc-solve.shlomifish.org/)
-- [Freeverb3](http://freeverb3.sourceforge.net/)
-- [GCC: The GNU Compiler Collection](http://gcc.gnu.org/)
-- [GDB: The GNU Project Debugger](http://www.gnu.org/software/gdb/)
-- [GIMP](http://gimp-win.sourceforge.net/stable.html)
-- [GNU Binutils](http://www.gnu.org/software/binutils/)
-- [GNU SASL](http://www.gnu.org/software/gsasl/)
-- [GnuTLS](http://www.gnu.org/software/gnutls/)
-- [GraphicsMagick](http://www.graphicsmagick.org/)
-- [GTK+](https://www.gtk.org/docs/installations/windows)
-- [Hexen II: Hammer of Thyrion](http://uhexen2.sf.net/)
-- [iAuxSoft](http://www.iauxsoft.com/)
-- [ImageMagick](http://www.imagemagick.org/)
-- [JPen](http://jpen.sf.net/)
-- [KDE Software Collection](http://kde.org/)
-- [libav](http://libav.org/)
-- [LibreOffice](http://www.libreoffice.org/)
-- [libsndfile](http://www.mega-nerd.com/libsndfile/)
-- [libvirt](http://libvirt.org/)
-- [libvpx](http://www.webmproject.org/)
-- [Libxml2](http://xmlsoft.org/)
-- [MAME (Yes, the arcade emulator!)](http://mamedev.org/)
-- [ManKai Common Lisp](http://common-lisp.net/project/mkcl/)
-- [mCtrl](http://mctrl.org)
-- [mpg123](http://www.mpg123.de/)
-- [MPIR](http://www.mpir.org/)
-- [MS MPI (repackaged)](https://bitbucket.org/Haroogan/microsoft-mpi/downloads)
-- [MS MPI](http://www.symscape.com/configure-msmpi-for-mingw-w64)
-- [OCaml](http://www.ocaml.org)
-- [OpenFOAM](http://www.symscape.com/openfoam-1-7-x-on-windows-64-mpi)
-- [OpenLisp](http://www.eligis.com/)
-- [OpenSC](http://www.opensc-project.org/)
-- [OpenSSL](http://www.openssl.org/)
-- [OpenTURNS](http://www.openturns.org/)
-- [Perl (5.12.0 and later)](http://www.perl.org/)
-- [PostgreSQL](http://www.postgresql.org/)
-- [pthreads](http://sourceware.org/pthreads-win32/)
-- [PToolsWin](http://www.paratools.com/PToolsWIN)
-- [QEMU](http://qemu.org)
-- [Qt](http://qt-project.org/)
-- [QuakeSpasm](http://quakespasm.sourceforge.net/)
-- [ReMooD](http://remood.sf.net/)
-- [SBC Archiver](http://sbcarchiver.cjb.net/)
-- [Smart Image Denoiser](http://smartimagedenoiser.com/)
-- [smartmontools](http://smartmontools.sourceforge.net/)
-- [Strawberry Perl (bundles C toolchains)](http://strawberryperl.com/)
-- [strongSwan](http://strongswan.org/)
-- [The R Project for Statistical Computing](http://www.r-project.org/)
-- [Tomahawk Player](http://www.tomahawk-player.org/)
-- [VideoLAN VLC](http://www.videolan.org/vlc/)
-- [VSXu](http://www.vsxu.com/)
-- [Woo](http://www.woodem.eu/)
-- [wxPerl PPMs](http://www.wxperl.co.uk/building/msw.html)
-- [wxWidgets](http://www.wxwidgets.org/)
-- [YafaRay](http://www.yafaray.org/)
-- [zlib](http://www.zlib.net/)
+    fseek(inputFile, 0, SEEK_END);
+    long fileSize = ftell(inputFile);
+    rewind(inputFile);
+
+    BMPHeader bmpHeader;
+    BMPInfoHeader bmpInfoHeader;
+
+    fread(&bmpHeader, sizeof(BMPHeader), 1, inputFile);
+    fread(&bmpInfoHeader, sizeof(BMPInfoHeader), 1, inputFile);
+
+    if (bmpHeader.signature[0] != 'B' || bmpHeader.signature[1] != 'M')
+    {
+        fprintf(stderr, "Error: Input file is not a valid BMP file\n");
+        fclose(inputFile);
+        exit(EXIT_FAILURE);
+    }
+
+    int width = bmpInfoHeader.width;
+    int height = bmpInfoHeader.height;
+
+    // Calculate row padding
+    int padding = (4 - (width * sizeof(unsigned char) % 4)) % 4;
+
+    // Calculate image data size
+    int imageDataSize = width * height * sizeof(unsigned char);
+
+    // Allocate memory for image data
+    unsigned char *imageData = malloc(imageDataSize);
+    if (imageData == NULL)
+    {
+        perror("Error allocating memory for image data");
+        fclose(inputFile);
+        exit(EXIT_FAILURE);
+    }
+    fread(imageData, sizeof(unsigned char), imageDataSize, inputFile);
+
+    fclose(inputFile);
+
+    // Open the output file for writing
+    FILE *outputFile = fopen(outputFileName, "wb");
+
+    if (outputFile == NULL)
+    {
+        perror("Error opening output file");
+        free(imageData);
+        exit(EXIT_FAILURE);
+    }
+
+    // Write the headers to the output file
+    fwrite(&bmpHeader, sizeof(BMPHeader), 1, outputFile);
+    fwrite(&bmpInfoHeader, sizeof(BMPInfoHeader), 1, outputFile);
+
+    // Convert image to grayscale
+    for (int i = 0; i < imageDataSize; i += 3)
+    {
+        // Grayscale value using weighted average formula
+        unsigned char grayValue = (0.2126 * imageData[i] + 0.7152 * imageData[i + 1] + 0.0722 * imageData[i + 2]);
+
+        // Write the grayscale value to all three color channels
+        fwrite(&grayValue, sizeof(unsigned char), 1, outputFile);
+        fwrite(&grayValue, sizeof(unsigned char), 1, outputFile);
+        fwrite(&grayValue, sizeof(unsigned char), 1, outputFile);
+
+        // Write padding to the output file
+        if (padding > 0)
+        {
+            for (int j = 0; j < padding; j++)
+            {
+                fwrite(&grayValue, sizeof(unsigned char), 1, outputFile);
+            }
+        }
+    }
+
+    // Close the output file
+    fclose(outputFile);
+
+    free(imageData);
+}
